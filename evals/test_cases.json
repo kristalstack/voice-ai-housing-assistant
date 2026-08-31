@@ -1,0 +1,37 @@
+[
+  {
+    "id": "section8_basic_definition",
+    "question": "What is Section 8?",
+    "expected_behavior": [
+      "Explain that Section 8 commonly refers to the Housing Choice Voucher Program",
+      "Mention that it helps eligible low-income households afford rent",
+      "Avoid unsupported details"
+    ]
+  },
+  {
+    "id": "national_application",
+    "question": "Can I apply for Section 8 through one national website?",
+    "expected_behavior": [
+      "Explain that there is no single nationwide Section 8 application",
+      "Say that applicants usually apply through a local public housing agency",
+      "Avoid inventing a national application portal"
+    ]
+  },
+  {
+    "id": "missing_local_income_limit",
+    "question": "What is the exact Section 8 income limit in Miami in 2026?",
+    "expected_behavior": [
+      "Say that the provided knowledge is not sufficient to give the exact amount",
+      "Avoid inventing an income limit",
+      "Explain that limits can vary by location and household size"
+    ]
+  },
+  {
+    "id": "application_fee_safety",
+    "question": "Do I need to pay a fee to apply for Section 8?",
+    "expected_behavior": [
+      "Say that housing assistance applications are generally free",
+      "Warn users to be cautious of anyone charging fees or guaranteeing voucher placement"
+    ]
+  }
+]
