@@ -1,5 +1,8 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
+
 from app.llm import get_ai_response
+from app.speech import text_to_speech
 
 app = FastAPI(
     title="Voice AI Housing Assistant",
@@ -26,4 +29,13 @@ def ask_question(request: QuestionRequest):
     return {
         "question": request.question,
         "answer": answer
+    }
+
+@app.post("/speak")
+def speak_text(request: QuestionRequest):
+    audio_path = text_to_speech(request.question)
+
+    return {
+        "text": request.question,
+        "audio_file": audio_path
     }
