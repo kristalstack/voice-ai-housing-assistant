@@ -1,8 +1,8 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, File, UploadFile
 from pydantic import BaseModel
 
 from app.llm import get_ai_response
-from app.speech import text_to_speech
+from app.speech import text_to_speech, speech_to_text
 
 app = FastAPI(
     title="Voice AI Housing Assistant",
@@ -38,4 +38,18 @@ def speak_text(request: QuestionRequest):
     return {
         "text": request.question,
         "audio_file": audio_path
+    }
+
+@app.post("/transcribe")
+async def transcribe_audio(file: UploadFile = File(...)):
+    temp_path = f"temp_{file.filename}"
+
+    with open(temp_path, "wb") as buffer:
+        buffer.write(await file.read())
+
+    transcription = speech_to_text(temp_path)
+
+    return {
+        "filename": file.filename,
+        "transcription": transcription
     }
