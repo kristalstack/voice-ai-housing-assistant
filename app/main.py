@@ -3,6 +3,7 @@ from pydantic import BaseModel
 
 from app.llm import get_ai_response
 from app.speech import text_to_speech, speech_to_text
+import uuid
 
 app = FastAPI(
     title="Voice AI Housing Assistant",
@@ -33,7 +34,8 @@ def ask_question(request: QuestionRequest):
 
 @app.post("/speak")
 def speak_text(request: QuestionRequest):
-    audio_path = text_to_speech(request.question)
+    audio_filename = f"speech_{uuid.uuid4().hex}.mp3"
+    audio_path = text_to_speech(request.question, audio_filename)
 
     return {
         "text": request.question,
@@ -52,4 +54,23 @@ async def transcribe_audio(file: UploadFile = File(...)):
     return {
         "filename": file.filename,
         "transcription": transcription
+    }
+
+@app.post("/voice-chat")
+async def voice_chat(file: UploadFile = File(...)):
+    temp_input_path = f"temp_{uuid.uuid4().hex}_{file.filename}"
+
+    with open(temp_input_path, "wb") as buffer:
+        buffer.write(await file.read())
+
+    transcription = speech_to_text(temp_input_path)
+    answer = get_ai_response(transcription)
+
+    audio_filename = f"response_{uuid.uuid4().hex}.mp3"
+    audio_path = text_to_speech(answer, audio_filename)
+
+    return {
+        "transcription": transcription,
+        "answer": answer,
+        "audio_file": audio_path
     }
