@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from app.llm import get_ai_response
 
 app = FastAPI(
     title="Voice AI Housing Assistant",
@@ -20,7 +21,9 @@ class QuestionRequest(BaseModel):
 
 @app.post("/ask")
 def ask_question(request: QuestionRequest):
+    answer = get_ai_response(request.question)
+
     return {
         "question": request.question,
-        "answer": "This is a placeholder response."
+        "answer": answer
     }
